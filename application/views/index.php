@@ -21,9 +21,9 @@
                         <th>Gambar</th>
                         <th>Aksi</th>
                     </tr>
-               
             </table>
         </thead>
+    </div>
 
 </body>
 </html>
