@@ -10,7 +10,7 @@
 
     <center><h1>Data Barang</h1></center>
      &nbsp; 
-     
+
     <div class="container">
 	 <table class="table table-striped">
                 <thead>
@@ -18,8 +18,8 @@
                         <th>Jenis Barang</th>
                         <th>Nama Barang</th>
                         <th>Stok</th>
-                        <th>Barang</th>
-                        <th>AKSI</th>
+                        <th>Gambar</th>
+                        <th>Aksi</th>
                     </tr>
                
             </table>
