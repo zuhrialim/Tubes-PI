@@ -398,7 +398,7 @@ if(isset($_POST['addadmin'])){
  	}
  }
 
- //hapusadmin
+ //hapus admin
  if(isset($_POST['hapusadmin'])){
  	$id = $_POST['id'];
 
@@ -410,5 +410,45 @@ if(isset($_POST['addadmin'])){
  	}
 
  }
+
+ //supplier tambah
+ if(isset($_POST['addnewsupplier'])){
+	$supplier = $_POST['supplier'];
+	
+	$queryinsert = mysqli_query($conn, "insert into supplier (supplier) values ('$supplier')");
+
+	if($queryinsert){
+		header('location:supplier.php');
+	}else {
+		header('lcoation:supplier.php');
+	}
+}
+
+//edit data Supplier
+if(isset($_POST['updatesupplier'])){
+    $supplier = $_POST['supplier'];
+    $idnya = $_POST['idb'];
+
+    $queryupdate = mysqli_query($conn, "update supplier set supplier='$supplier' where idsup='$idnya'");
+
+    if($queryupdate){
+        header('location:supplier.php');
+    } else {
+        header('lcoation:supplier.php');
+    }
+}
+
+//hapus supplier
+if(isset($_POST['hapussupplier'])){
+    $id = $_POST['idb'];
+
+    $querydelete = mysqli_query($conn, "delete from supplier where idsup = '$id'");
+    if($querydelete){
+        header('location:supplier.php');
+    } else {
+        header('lcoation:supplier.php');
+    }
+
+}
 
 ?>
