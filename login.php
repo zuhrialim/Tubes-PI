@@ -1,3 +1,37 @@
+<?php
+require 'function.php';
+
+
+//cek login
+if (isset($_POST['login'])){
+  $username = $_POST['username']; 
+  $password = $_POST['password'];
+
+  $cekdatabase = mysqli_query($conn, "SELECT * FROM login where username='$username' and password='$password'");
+  $hitung = mysqli_num_rows($cekdatabase);
+
+  if($hitung>0){
+    $data = mysqli_fetch_assoc($cekdatabase);
+    $_SESSION['log'] = 'True';
+    $_SESSION['username'] = $username;
+    $_SESSION['nama'] = $data['nama'];
+    $_SESSION['status'] = "sudah_login";
+    $_SESSION['id_login'] = $data['id'];
+    header('location:index.php');
+  } else {
+   header("location:login.php?pesan=Username/Password Salah.");
+  }
+};
+
+if(!isset($_SESSION['log'])){
+
+}else{
+    header('location:index.php');
+}
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
