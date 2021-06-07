@@ -1,3 +1,12 @@
+<?php
+require 'function.php';
+require 'cek.php';
+
+//qr
+ $urlview = 'http://localhost/stockbarang/view.php?id='.$idbarang;
+ $qrcode = 'https://chart.googleapis.com/chart?chs=130x130&cht=qr&chl='.$urlview.'&choe=UTF-8';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -49,7 +58,7 @@
                 <nav class="sb-sidenav accordion sb-sidenav bg-light" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
-                            <div class="sb-sidenav-menu-heading"><img style="width: 90%" src="images/sekai.jpg" class="rounded-circle" alt="Cinque Terre"></div>
+                            <div class="sb-sidenav-menu-heading"><img style="width: 90%" src="images/J.png" class="rounded-circle" alt="Cinque Terre"></div>
                             <Center><h5 style="font-family: cursive ">Hai <?php echo $_SESSION['username']; ?></h5></Center>
                             <div class="sb-sidenav-menu-heading"></div>
                             <a class="nav-link" href="index.php">
@@ -87,3 +96,249 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
+                        <?php
+                        $ambildatastock = mysqli_query($conn, "select * from stock where stock < 1");
+                        while($fetch = mysqli_fetch_array($ambildatastock)){
+                            $barang = $fetch['namabarang'];
+                    ?>
+
+                    <div class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong> Stok barang <?=$barang;?> kosong!!</strong>
+                    </div>
+
+              <?php
+                }
+              ?>
+
+                        <h1 class="mt-4">Daftar Barang</h1>
+                      
+                        <div class="card mb-4">
+                            <div class="card-header">
+                               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                                    Tambah Barang
+                                </button>
+                                <a href="export.php" class="btn btn-success float-right">Export Barang</a>
+                            </div>
+                          
+                            <div class="card-body">
+                                <div class= "table-responsive">  
+                                <table id="tabel" class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama Barang</th>
+                                            <th>Kategori Barang</th>
+                                            <th>Stok</th>
+                                            <th>Gambar</th>
+                                            <th>Qr Code</th>
+                                            <th>Aksi</th>
+                                            </tr>
+                                    </thead>
+                                 
+                                    <tbody>
+
+                                        <?php
+                                        $ambilsemuadatastock = mysqli_query($conn, "select * from stock s, kategori k where k.idkategori = s.idkategori ");
+                                         $i = 1;
+                                        while($data = mysqli_fetch_array($ambilsemuadatastock)){
+                                            $idb = $data['idbarang'];
+                                            $idk = $data['idkategori'];
+                                            $namabarang = $data['namabarang'];
+                                            $stock = $data['stock'];
+                                            $kategori = $data['kategori'];
+                                            
+
+                                            //CEK gambar ada/tdk
+                                            $gambar = $data['image']; //ambil gambar
+                                            if($gambar == null){
+                                                //ada
+                                                $img = 'Tidak ada Gambar';
+                                            }else{
+                                                $img ='<img src = "images/'.$gambar.'" class="zoomable">';
+                                            }
+                                        ?>
+
+                                        <tr>
+                                            <td><?=$i++;
+                                            ?></td>
+                                            <td><?=$namabarang;?></td>
+                                            <td><?=$kategori;?></td>
+                                            <td><?=$stock;?></td>
+                                            <td><?=$img;?></td>
+                                            <td> <a href="<?=$urlview.$idb;?>">
+                                            <img alt="" src="<?=$qrcode;?>"></td>
+                                            <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit<?=$idb;?>">
+                                                <i class="fas fa-edit"></i></button>
+                                                <input type="hidden" name="idbarangygmaudihapus" value="<?=$idb;?>">
+                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete<?=$idb;?>">
+                                                 <i class="fas fa-trash-alt"></i></button>
+                                                <a href="detail.php?id=<?=$idb;?>" class="btn btn-success"><i class="fas fa-info-circle"></i></a>
+                                                 
+                                         </td>
+
+                                       </tr>
+
+                                        <!-- Edit  -->
+                                      <div class="modal fade" id="edit<?=$idb;?>">
+                                        <div class="modal-dialog">
+                                          <div class="modal-content">
+                                          
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                              <h4 class="modal-title">Edit Barang</h4>
+                                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+                                            
+                                            <!-- Modal body -->
+                                            <form method="post" enctype="multipart/form-data">
+                                            <div class="modal-body">
+                                            <input type="text" name="namabarang" value="<?=$namabarang;?>" placeholder="Nama Barang" class="form-control" required="">
+                                            <br>
+                                            <select name="kategorinya" class="form-control">
+                                            <?php
+                                                $ambilsemuadatanya = mysqli_query($conn, "select * from kategori");
+                                                while($fetcharray = mysqli_fetch_array($ambilsemuadatanya)){
+                                                    $namabarangnya = $fetcharray['kategori'];
+                                                    $idbarangnya = $fetcharray['idkategori'];
+                                                ?>
+                                                
+                                                <option value="<?=$idbarangnya;?>"><?=$namabarangnya;?></option>
+
+                                                <?php
+                                            }
+                                            ?>
+                                            </select>
+                                            <br>
+                                            <input type="file" name="file" class="form-control">
+                                            <br>
+                                            <input type="hidden" name="idb" value="<?=$idb;?>">
+                                            <input type="hidden" name="deskripsi" value="<?=$deskripsi;?>" placeholder="Deskripsi" class="form-control" required="">
+                                            <button type="submit" class="btn btn-primary" name="updatebarang">Edit</button>
+                                            </div>
+                                            </form> 
+                                            
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                       <!-- Hapus  -->
+                                      <div class="modal fade" id="delete<?=$idb;?>">
+                                        <div class="modal-dialog">
+                                          <div class="modal-content">
+                                          
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                              <h4 class="modal-title">Hapus Barang</h4>
+                                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+                                            
+                                            <!-- Modal body -->
+                                            <form method="post">
+                                            <div class="modal-body">
+                                            Apakah yakin ingin menghapus barang <?=$namabarang;?>?
+                                            <input type="hidden" name="idb" value="<?=$idb;?>">
+                                            <br>
+                                            <br>
+                                            <button type="submit" class="btn btn-danger" name="hapusbarang">Hapus</button>
+                                            </div>
+                                            </form>  
+                                            
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                       <?php
+                                   };
+                                   ?>
+                                       
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+
+
+            </div>
+        </div>
+        <script src="js/scripts.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="assets/demo/chart-area-demo.js"></script>
+        <script src="assets/demo/chart-bar-demo.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+        <script src="js/datatables-simple-demo.js"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+    </body>
+    
+<!-- The Modal -->
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Tambah Barang</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <form method="post" enctype="multipart/form-data">
+        <div class="modal-body">
+        <input type="text" name="namabarang" placeholder="Nama Barang" class="form-control" required="">
+        <br>
+         <select name="kategorinya" class="form-control">
+            <?php
+                $ambilsemuadatanya = mysqli_query($conn, "select * from kategori");
+                while($fetcharray = mysqli_fetch_array($ambilsemuadatanya)){
+                    $namabarangnya = $fetcharray['kategori'];
+                    $idbarangnya = $fetcharray['idkategori'];
+                ?>
+                
+                <option value="<?=$idbarangnya;?>"><?=$namabarangnya;?></option>
+
+                <?php
+            }
+            ?>
+        </select>
+
+        <br> 
+        <input type="number" name="stock" placeholder="stock" class="form-control" required="">
+        <br> 
+        <input type="file" name="file" class="form-control">
+        <br>
+        <input type="hidden" name="deskripsi" placeholder="Deskripsi barang" class="form-control" required="">
+        <br> 
+        
+        <button type="submit" class="btn btn-primary" name="addnewbarang">Tambah</button>
+        </div>
+        </form>  
+        
+       
+        <script type="text/javascript">
+            $(document).ready( function () {
+            $('#tabel').DataTable();
+        } );
+        </script>
+
+        <script>
+        // Function ini dijalankan ketika Halaman ini dibuka pada browser
+        $(function(){
+        setInterval(timestamp, 1000);//fungsi yang dijalan setiap detik, 1000 = 1 detik
+        });
+         
+        //Fungi ajax untuk Menampilkan Jam dengan mengakses File ajax_timestamp.php
+        function timestamp() {
+        $.ajax({
+        url: 'ajax_timestamp.php',
+        success: function(data) {
+        $('#timestamp').html(data);
+        },
+        });
+        }
+        </script>
+        
+      </div>
+    </div>
+  </div>
+</html>
