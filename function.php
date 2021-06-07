@@ -327,4 +327,88 @@ if(isset($_POST['hapusbarangkeluar'])){
 	}
 }
 
+//admin
+if(isset($_POST['addadmin'])){
+	$username = $_POST['username'];
+	$password = $_POST['password'];
+
+	$queryinsert = mysqli_query($conn, "insert into login (username, password) values ('$username', '$password')");
+
+	if($queryinsert){
+		header('location:admin.php');
+	}else {
+		header('lcoation:admin.php');
+	}
+}
+
+//edit data admin
+ if(isset($_POST['updateadmin'])){
+ 	$usernamebaru = $_POST['usernameadmin'];
+ 	$passwordbaru = $_POST['passwordbaru'];
+ 	$idnya = $_POST['id'];
+
+ 	$queryupdate = mysqli_query($conn, "update login set username='$usernamebaru', password='$passwordbaru' where iduser='$idnya'");
+
+ 	if($queryupdate){
+ 		header('location:admin.php');
+ 	} else {
+ 		header('lcoation:admin.php');
+ 	}
+ }
+
+ //hapusadmin
+ if(isset($_POST['hapusadmin'])){
+ 	$id = $_POST['id'];
+
+ 	$querydelete = mysqli_query($conn, "delete from login where iduser = '$id'");
+ 	if($querydelete){
+ 		header('location:admin.php');
+ 	} else {
+ 		header('location:admin.php');
+ 	}
+
+ }
+
+ //admin
+if(isset($_POST['addadmin'])){
+	$username = $_POST['username'];
+	$password = $_POST['password'];
+
+	$queryinsert = mysqli_query($conn, "insert into login (username, password) values ('$username', '$password')");
+
+	if($queryinsert){
+		header('location:admin.php');
+	}else {
+		header('lcoation:admin.php');
+	}
+}
+
+//edit data admin
+ if(isset($_POST['updateadmin'])){
+ 	$usernamebaru = $_POST['usernameadmin'];
+ 	$passwordbaru = $_POST['passwordbaru'];
+ 	$idnya = $_POST['id'];
+
+ 	$queryupdate = mysqli_query($conn, "update login set username='$usernamebaru', password='$passwordbaru' where iduser='$idnya'");
+
+ 	if($queryupdate){
+ 		header('location:admin.php');
+ 	} else {
+ 		header('lcoation:admin.php');
+ 	}
+ }
+
+ //hapusadmin
+ if(isset($_POST['hapusadmin'])){
+ 	$id = $_POST['id'];
+
+ 	$querydelete = mysqli_query($conn, "delete from login where iduser = '$id'");
+ 	if($querydelete){
+ 		header('location:admin.php');
+ 	} else {
+ 		header('location:admin.php');
+ 	}
+
+ }
+
 ?>
