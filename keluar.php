@@ -146,8 +146,8 @@ require 'cek.php';
                                             <td><?=$qty;?></td>
                                             <td><?=$penerima;?></td>
                                             <td><?=$img;?></td>
-                                            <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit<?=$idk;?>">
-                                                <i class="fas fa-edit"></i></button>
+                                            <td><!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit<?=$idk;?>">
+                                                <i class="fas fa-edit"></i></button>-->
                                                 <input type="hidden" name="idbarangygmaudihapus" value="<?=$idb;?>">
                                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete<?=$idk;?>">
                                                  <i class="fas fa-trash-alt"></i></button>
