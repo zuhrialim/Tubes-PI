@@ -151,7 +151,7 @@ require 'cek.php';
                                             <td><?=$img;?></td>
                                             <td>
                                                 <input type="hidden" name="idbarangygmaudihapus" value="<?=$idb;?>">
-                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete<?=$idm;?>">
+                                                <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#delete<?=$idm;?>">
                                                  <i class="fas fa-trash-alt"></i></button>
                                          </td>
                                        </tr>

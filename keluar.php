@@ -149,7 +149,7 @@ require 'cek.php';
                                             <td><!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit<?=$idk;?>">
                                                 <i class="fas fa-edit"></i></button>-->
                                                 <input type="hidden" name="idbarangygmaudihapus" value="<?=$idb;?>">
-                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete<?=$idk;?>">
+                                                <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#delete<?=$idk;?>">
                                                  <i class="fas fa-trash-alt"></i></button>
                                          </td>
                                        </tr>
