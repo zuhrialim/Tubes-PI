@@ -20,7 +20,16 @@ require 'cek.php';
 			<h2>Barang Masuk</h2>
 				<div class="data-tables datatable-dark">
 					
-					<!-- Masukkan table nya disini, dimulai dari tag TABLE -->
+           <div class="row mt-4">
+              <div class="col">
+                <form method="post" class="form-inline">
+                  <input type="date" name="tgl_mulai" class="form-control">
+                  <input type="date" name="tgl_selesai" class="form-control ml-2">
+                <button type="submit" name="filter_tgl" class="btn btn-success ml-2">Filter</button>
+              </form>  
+             </div>
+            </div>
+					
            <table id="masuk" class="table table-stripped">
                                     <thead>
                                         <tr>
@@ -34,7 +43,22 @@ require 'cek.php';
                                     <tbody>
                                        
                                         <?php
-                                        $ambilsemuadatastock = mysqli_query($conn, "select * from masuk m, supplier u, stock s where u.idsup = m.idsup AND s.idbarang = m.idbarang ");
+
+                                       if(isset($_POST['filter_tgl'])){
+                                            $mulai = $_POST['tgl_mulai'];
+                                            $selesai = $_POST['tgl_selesai'];
+
+                                            if($mulai!=null || $selesai=null){
+                                                $ambilsemuadatastock = mysqli_query($conn, "select * from masuk m, supplier u, stock s where u.idsup = m.idsup AND s.idbarang = m.idbarang and tanggal BETWEEN '$mulai' and DATE_ADD('$selesai',INTERVAL 1 DAY) order by idmasuk DESC");  
+                                            } else {
+                                                $ambilsemuadatastock = mysqli_query($conn, "select * from masuk m, supplier u, stock s where u.idsup = m.idsup AND s.idbarang = m.idbarang order by idmasuk DESC ");
+                                            }
+
+                                          
+                                        } else {
+                                             $ambilsemuadatastock = mysqli_query($conn, "select * from masuk m, supplier u, stock s where u.idsup = m.idsup AND s.idbarang = m.idbarang order by idmasuk DESC ");
+                                        }
+
                                         while($data = mysqli_fetch_array($ambilsemuadatastock)){
                                             $idb = $data['idbarang'];
                                             $idm = $data['idmasuk'];

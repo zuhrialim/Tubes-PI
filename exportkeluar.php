@@ -20,7 +20,16 @@ require 'cek.php';
 			<h2>Barang Keluar</h2>
 				<div class="data-tables datatable-dark">
 					
-					<!-- Masukkan table nya disini, dimulai dari tag TABLE -->
+					<div class="row mt-4">
+            <div class="col">
+              <form method="post" class="form-inline">
+                <input type="date" name="tgl_mulai" class="form-control">
+                <input type="date" name="tgl_selesai" class="form-control ml-2">
+              <button type="submit" name="filter_tgl" class="btn btn-success ml-2">Filter</button>
+             </form>  
+            </div>
+           </div>
+
            <table id="keluar" class="table table-stripped">
                                     <thead>
                                         <tr>
@@ -34,7 +43,20 @@ require 'cek.php';
                                     <tbody>
                                         
                                         <?php
-                                        $ambilsemuadatastock = mysqli_query($conn, "select * from keluar k, stock s where s.idbarang = k.idbarang");
+                                        if(isset($_POST['filter_tgl'])){
+                                            $mulai = $_POST['tgl_mulai'];
+                                            $selesai = $_POST['tgl_selesai'];
+
+                                             if($mulai!=null || $selesai=null){
+                                              $ambilsemuadatastock = mysqli_query($conn, "select * from keluar k, stock s where s.idbarang = k.idbarang and tanggal BETWEEN '$mulai' and DATE_ADD('$selesai',INTERVAL 1 DAY) order by idkeluar DESC");
+                                         } else {
+                                              $ambilsemuadatastock = mysqli_query($conn, "select * from keluar k, stock s where s.idbarang = k.idbarang order by idkeluar DESC");
+                                         } 
+                                            
+                                         } else {
+                                            $ambilsemuadatastock = mysqli_query($conn, "select * from keluar k, stock s where s.idbarang = k.idbarang order by idkeluar DESC");
+                                         }
+
                                         while($data = mysqli_fetch_array($ambilsemuadatastock)){
                                             $idk = $data['idkeluar'];
                                             $idb = $data['idbarang'];

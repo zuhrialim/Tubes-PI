@@ -104,7 +104,18 @@ require 'cek.php';
                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
                                     Tambah Barang Masuk
                                 </button>
-                                <a href="exportmasuk.php" class="btn btn-success float-right">Export Barang</a>
+
+                                <div class="row mt-4">
+                                    <div class="col">
+                                  <form method="post" class="form-inline">
+                                    <input type="date" name="tgl_mulai" class="form-control">
+                                    <input type="date" name="tgl_selesai" class="form-control ml-2">
+                                    <button type="submit" name="filter_tgl" class="btn btn-success ml-2">Filter</button>
+                                </form>  
+                                </div>
+                            </div>
+
+                                <a href="exportmasuk.php" class="btn btn-success float-right">Export Barang Masuk</a>
                             </div>
                             <div class="card-body">
                                 <div class= "table-responsive">  
@@ -123,7 +134,22 @@ require 'cek.php';
                                     <tbody>
                                        
                                         <?php
-                                        $ambilsemuadatastock = mysqli_query($conn, "select * from masuk m, supplier u, stock s where u.idsup = m.idsup AND s.idbarang = m.idbarang ");
+                                        
+                                        if(isset($_POST['filter_tgl'])){
+                                            $mulai = $_POST['tgl_mulai'];
+                                            $selesai = $_POST['tgl_selesai'];
+
+                                            if($mulai!=null || $selesai=null){
+                                                $ambilsemuadatastock = mysqli_query($conn, "select * from masuk m, supplier u, stock s where u.idsup = m.idsup AND s.idbarang = m.idbarang and tanggal BETWEEN '$mulai' and DATE_ADD('$selesai',INTERVAL 1 DAY) order by idmasuk DESC");  
+                                            } else {
+                                                $ambilsemuadatastock = mysqli_query($conn, "select * from masuk m, supplier u, stock s where u.idsup = m.idsup AND s.idbarang = m.idbarang order by idmasuk DESC ");
+                                            }
+
+                                          
+                                        } else {
+                                             $ambilsemuadatastock = mysqli_query($conn, "select * from masuk m, supplier u, stock s where u.idsup = m.idsup AND s.idbarang = m.idbarang order by idmasuk DESC ");
+                                        }
+
                                         while($data = mysqli_fetch_array($ambilsemuadatastock)){
                                             $idb = $data['idbarang'];
                                             $idm = $data['idmasuk'];

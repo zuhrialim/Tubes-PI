@@ -104,7 +104,18 @@ require 'cek.php';
                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
                                     Tambah Barang Keluar
                                 </button>
-                                <a href="exportkeluar.php" class="btn btn-success float-right">Export Barang</a>
+
+                                <div class="row mt-4">
+                                    <div class="col">
+                                  <form method="post" class="form-inline">
+                                    <input type="date" name="tgl_mulai" class="form-control">
+                                    <input type="date" name="tgl_selesai" class="form-control ml-2">
+                                    <button type="submit" name="filter_tgl" class="btn btn-success ml-2">Filter</button>
+                                </form>  
+                                </div>
+                            </div>
+
+                                <a href="exportkeluar.php" class="btn btn-success float-right">Export Barang Keluar</a>
                             </div>
                             <div class="card-body">
                                 <div class= "table-responsive">  
@@ -123,7 +134,21 @@ require 'cek.php';
                                     <tbody>
                                         
                                         <?php
-                                        $ambilsemuadatastock = mysqli_query($conn, "select * from keluar k, stock s where s.idbarang = k.idbarang");
+
+                                        if(isset($_POST['filter_tgl'])){
+                                            $mulai = $_POST['tgl_mulai'];
+                                            $selesai = $_POST['tgl_selesai'];
+
+                                             if($mulai!=null || $selesai=null){
+                                              $ambilsemuadatastock = mysqli_query($conn, "select * from keluar k, stock s where s.idbarang = k.idbarang and tanggal BETWEEN '$mulai' and DATE_ADD('$selesai',INTERVAL 1 DAY) order by idkeluar DESC");
+                                         } else {
+                                              $ambilsemuadatastock = mysqli_query($conn, "select * from keluar k, stock s where s.idbarang = k.idbarang order by idkeluar DESC");
+                                         } 
+                                            
+                                         } else {
+                                            $ambilsemuadatastock = mysqli_query($conn, "select * from keluar k, stock s where s.idbarang = k.idbarang order by idkeluar DESC");
+                                         }
+
                                         while($data = mysqli_fetch_array($ambilsemuadatastock)){
                                             $idk = $data['idkeluar'];
                                             $idb = $data['idbarang'];
