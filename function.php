@@ -110,25 +110,7 @@ if(isset($_POST['updatebarang'])){
 
 }
 
-//hapus barang
-if(isset($_POST['hapusbarang'])){
-	$idb = $_POST['idb'];
-
-	$gambar = mysqli_query($conn, "select * from stock where idbarang='$idb'");
-	$get = mysqli_fetch_array($gambar);
-	$img = 'images/'.$get['image'];
-	unlink($img);
-
-	$hapus = mysqli_query($conn, "delete from stock where idbarang='$idb'");
-	if($hapus){
-		header('location:index.php');
-	}else{
-		echo 'gagal';
-		header('location:index.php');
-	}
-};
-
-//fitur menambah barang masuk
+//menambah barang masuk
 if(isset($_POST['barangmasuk'])){
 	$barangnya = $_POST['barangnya'];
 	$suppliernya = $_POST['supplier'];
@@ -151,7 +133,62 @@ if(isset($_POST['barangmasuk'])){
 	}
 }
 
-//fitur ubah barang masuk
+//menambah barang keluar
+if(isset($_POST['addbarangkeluar'])){
+	$barangnya = $_POST['barangnya'];
+	$penerima = $_POST['penerima'];
+	$qty = $_POST['qty'];
+
+	$cekstocksekarang = mysqli_query($conn, "select * from stock where idbarang='$barangnya'");
+	$ambildatanya = mysqli_fetch_array($cekstocksekarang);
+	$stocksekarang = $ambildatanya['stock'];
+
+	if($stocksekarang >= $qty){
+		//kalau brg cukup
+	
+
+	$tambahkanstocksekarangdenganquantity = $stocksekarang-$qty;
+
+
+	$addtokeluar = mysqli_query($conn,"insert into keluar (idbarang, penerima, qty) values('$barangnya','$penerima','$qty')");
+	$updatestockmasuk = mysqli_query($conn, "update stock set stock='$tambahkanstocksekarangdenganquantity' where idbarang='$barangnya'");
+	if($addtokeluar&&$updatestockmasuk){
+		header('location:keluar.php');
+	}else{
+		echo 'gagal';
+		header('location:keluar.php');
+	}
+  } else {
+  	//kalau brg tdk ckup
+  	echo '
+  	<script>
+  		alert("Stock tidak cukup");
+  		window.location.href="keluar.php";
+  	</script>';
+  }
+}
+
+
+
+//hapus barang
+if(isset($_POST['hapusbarang'])){
+	$idb = $_POST['idb'];
+
+	$gambar = mysqli_query($conn, "select * from stock where idbarang='$idb'");
+	$get = mysqli_fetch_array($gambar);
+	$img = 'images/'.$get['image'];
+	unlink($img);
+
+	$hapus = mysqli_query($conn, "delete from stock where idbarang='$idb'");
+	if($hapus){
+		header('location:index.php');
+	}else{
+		echo 'gagal';
+		header('location:index.php');
+	}
+};
+
+//Ubah barang masuk
 if(isset($_POST['updatebarangmasuk'])){
 	$idb = $_POST['idb'];
 	$idm = $_POST['idm'];
@@ -195,7 +232,7 @@ if(isset($_POST['updatebarangmasuk'])){
   }
 }
 
-//fitur menghapus barang masuk
+//menghapus brg msk
 if(isset($_POST['hapusbarangmasuk'])){
 	$idb = $_POST['idb'];
 	$qty = $_POST['kty'];
@@ -215,41 +252,6 @@ if(isset($_POST['hapusbarangmasuk'])){
 	} else {
 		header('location:masuk.php');
 	}
-}
-
-//menambah barang keluar
-if(isset($_POST['addbarangkeluar'])){
-	$barangnya = $_POST['barangnya'];
-	$penerima = $_POST['penerima'];
-	$qty = $_POST['qty'];
-
-	$cekstocksekarang = mysqli_query($conn, "select * from stock where idbarang='$barangnya'");
-	$ambildatanya = mysqli_fetch_array($cekstocksekarang);
-	$stocksekarang = $ambildatanya['stock'];
-
-	if($stocksekarang >= $qty){
-		//kalau barang cukup
-	
-
-	$tambahkanstocksekarangdenganquantity = $stocksekarang-$qty;
-
-
-	$addtokeluar = mysqli_query($conn,"insert into keluar (idbarang, penerima, qty) values('$barangnya','$penerima','$qty')");
-	$updatestockmasuk = mysqli_query($conn, "update stock set stock='$tambahkanstocksekarangdenganquantity' where idbarang='$barangnya'");
-	if($addtokeluar&&$updatestockmasuk){
-		header('location:keluar.php');
-	}else{
-		echo 'gagal';
-		header('location:keluar.php');
-	}
-  } else {
-  	//kalau barang tidak cukup
-  	echo '
-  	<script>
-  		alert("Stock tidak cukup");
-  		window.location.href="keluar.php";
-  	</script>';
-  }
 }
 
 //Ubah barang keluar
@@ -305,7 +307,7 @@ if(isset($_POST['updatebarangkeluar'])){
   }
 }
 
-//menghapus brg keluar
+//menghapus brg klr
 if(isset($_POST['hapusbarangkeluar'])){
 	$idb = $_POST['idb'];
 	$qty = $_POST['kty'];
@@ -369,50 +371,48 @@ if(isset($_POST['addadmin'])){
 
  }
 
- //admin
-if(isset($_POST['addadmin'])){
-	$username = $_POST['username'];
-	$password = $_POST['password'];
-
-	$queryinsert = mysqli_query($conn, "insert into login (username, password) values ('$username', '$password')");
+ //kategori tambah
+if(isset($_POST['addnewkategori'])){
+	$namabarang = $_POST['namabarang'];
+	
+	$queryinsert = mysqli_query($conn, "insert into kategori (kategori) values ('$namabarang')");
 
 	if($queryinsert){
-		header('location:admin.php');
+		header('location:kategori.php');
 	}else {
-		header('lcoation:admin.php');
+		header('lcoation:kategori.php');
 	}
 }
 
-//edit data admin
- if(isset($_POST['updateadmin'])){
- 	$usernamebaru = $_POST['usernameadmin'];
- 	$passwordbaru = $_POST['passwordbaru'];
- 	$idnya = $_POST['id'];
+//edit data kategori
+ if(isset($_POST['updatekategori'])){
+ 	$namabarang = $_POST['namabarang'];
+ 	$idnya = $_POST['idb'];
 
- 	$queryupdate = mysqli_query($conn, "update login set username='$usernamebaru', password='$passwordbaru' where iduser='$idnya'");
+ 	$queryupdate = mysqli_query($conn, "update kategori set kategori='$namabarang' where idkategori='$idnya'");
 
  	if($queryupdate){
- 		header('location:admin.php');
+ 		header('location:kategori.php');
  	} else {
- 		header('lcoation:admin.php');
+ 		header('lcoation:kategori.php');
  	}
  }
 
- //hapus admin
- if(isset($_POST['hapusadmin'])){
- 	$id = $_POST['id'];
+ //hapus kategori
+ if(isset($_POST['hapuskategori'])){
+ 	$id = $_POST['idb'];
 
- 	$querydelete = mysqli_query($conn, "delete from login where iduser = '$id'");
+ 	$querydelete = mysqli_query($conn, "delete from kategori where idkategori = '$id'");
  	if($querydelete){
- 		header('location:admin.php');
+ 		header('location:kategori.php');
  	} else {
- 		header('location:admin.php');
+ 		header('lcoation:kategori.php');
  	}
 
  }
 
  //supplier tambah
- if(isset($_POST['addnewsupplier'])){
+if(isset($_POST['addnewsupplier'])){
 	$supplier = $_POST['supplier'];
 	
 	$queryinsert = mysqli_query($conn, "insert into supplier (supplier) values ('$supplier')");
@@ -425,30 +425,31 @@ if(isset($_POST['addadmin'])){
 }
 
 //edit data Supplier
-if(isset($_POST['updatesupplier'])){
-    $supplier = $_POST['supplier'];
-    $idnya = $_POST['idb'];
+ if(isset($_POST['updatesupplier'])){
+ 	$supplier = $_POST['supplier'];
+ 	$idnya = $_POST['idb'];
 
-    $queryupdate = mysqli_query($conn, "update supplier set supplier='$supplier' where idsup='$idnya'");
+ 	$queryupdate = mysqli_query($conn, "update supplier set supplier='$supplier' where idsup='$idnya'");
 
-    if($queryupdate){
-        header('location:supplier.php');
-    } else {
-        header('lcoation:supplier.php');
-    }
-}
+ 	if($queryupdate){
+ 		header('location:supplier.php');
+ 	} else {
+ 		header('lcoation:supplier.php');
+ 	}
+ }
 
 //hapus supplier
-if(isset($_POST['hapussupplier'])){
-    $id = $_POST['idb'];
+ if(isset($_POST['hapussupplier'])){
+ 	$id = $_POST['idb'];
 
-    $querydelete = mysqli_query($conn, "delete from supplier where idsup = '$id'");
-    if($querydelete){
-        header('location:supplier.php');
-    } else {
-        header('lcoation:supplier.php');
-    }
+ 	$querydelete = mysqli_query($conn, "delete from supplier where idsup = '$id'");
+ 	if($querydelete){
+ 		header('location:supplier.php');
+ 	} else {
+ 		header('lcoation:supplier.php');
+ 	}
 
-}
+ }
+
 
 ?>
