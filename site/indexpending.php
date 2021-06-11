@@ -61,29 +61,13 @@ require 'cek.php';
                             <div class="sb-sidenav-menu-heading"><img style="width: 90%" src="images/J.png" class="rounded-circle" alt="Cinque Terre"></div>
                             <Center><h5 style="font-family: cursive ">Hai <?php echo $_SESSION['username']; ?></h5></Center>
                             <div class="sb-sidenav-menu-heading"></div>
-                            <a class="nav-link" href="index.php">
+                            <a class="nav-link" href="index2.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-warehouse"></i></div>
-                                Daftar Barang
+                                Barang Pending
                             </a>
-                            <a class="nav-link" href="masuk.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-dolly-flatbed"></i></div>
-                                Barang Masuk
-                            </a>
-                            <a class="nav-link" href="keluar.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-truck-loading"></i></div>
-                                Barang Keluar
-                            </a>
-                            <a class="nav-link" href="kategori.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-indent"></i></div>
-                                Kategori
-                            </a>
-                            <a class="nav-link" href="supplier.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                                Supplier
-                            </a>
-                             <a class="nav-link" href="admin.php">
+                             <a class="nav-link" href="admin2.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-user-friends"></i></div>
-                                Admin
+                                Admin dan Staff
                             </a>
                             <a class="nav-link" href="logout.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-sign-out-alt"></i></div>
@@ -149,7 +133,6 @@ require 'cek.php';
                                             <th>Kategori Barang</th>
                                             <th>Stok</th>
                                             <th>Gambar</th>
-                                            <th>Qr Code</th>
                                             <th>Aksi</th>
                                             </tr>
                                     </thead>
@@ -194,8 +177,6 @@ require 'cek.php';
                                             <td><?=$kategori;?></td>
                                             <td><?=$stock;?></td>
                                             <td><?=$img;?></td>
-                                            <td> <a href="<?=$urlview.$idb;?>">
-                                            <img alt="" src="<?=$qrcode;?>"></td>
                                             <td>
                                                 <?php if($_SESSION['role'] == 'staff'): ?>
                                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit<?=$idb;?>">
@@ -305,7 +286,7 @@ require 'cek.php';
                                             <input type="hidden" name="idb" value="<?=$idb;?>">
                                             <br>
                                             <br>
-                                            <button type="submit" class="btn btn-danger" name="hapusbarang">Tolak</button>
+                                            <button type="submit" class="btn btn-danger" name="hapusbarangpending">Tolak</button>
                                             </div>
                                             </form>  
                                             

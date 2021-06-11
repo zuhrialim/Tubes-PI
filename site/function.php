@@ -37,7 +37,11 @@ if(isset($_POST['addnewbarang'])){
 			$addtotable = mysqli_query($conn, "insert into stock (idkategori, namabarang, deskripsi, stock, image, status) 
 				values('$kategorinya','$namabarang','$deskripsi','$stock','$image', '$status')");
 			if($addtotable){
-				header('location:index.php');
+				echo '
+			  	<script>
+			  		alert("Barang sedang menunggu persetujuan Admin");
+			  		window.location.href="index.php";
+			  	</script>';
 			}else {
 				echo 'Gagal';
 				header('location:index.php');
@@ -129,13 +133,31 @@ if(isset($_POST['hapusbarang'])){
 	}
 };
 
+
+if(isset($_POST['hapusbarangpending'])){
+	$idb = $_POST['idb'];
+
+	$gambar = mysqli_query($conn, "select * from stock where idbarang='$idb'");
+	$get = mysqli_fetch_array($gambar);
+	$img = 'images/'.$get['image'];
+	unlink($img);
+
+	$hapus = mysqli_query($conn, "delete from stock where idbarang='$idb'");
+	if($hapus){
+		header('location:indexpending.php');
+	}else{
+		echo 'gagal';
+		header('location:indexpending.php');
+	}
+};
+
 if (isset($_POST['terimabarang'])) {
 	$id = $_POST['idb'];
 
 	$changeStatus = mysqli_query($conn, "UPDATE stock SET status = 'approve' WHERE idbarang = '$id'");
 	if (!$changeStatus) $_SESSION['failed'] = true;
 
-	return header('location:index.php');
+	return header('location:indexpending.php');
 }
 
 //fitur menambah barang masuk
@@ -341,14 +363,14 @@ if(isset($_POST['hapusbarangkeluar'])){
 if(isset($_POST['addadmin'])){
 	$username = $_POST['username'];
 	$password = $_POST['password'];
-	$role = 'admin';
+	$role = $_POST['role'];
 
 	$queryinsert = mysqli_query($conn, "insert into login (username, password, role) values ('$username', '$password', '$role')");
 
 	if($queryinsert){
-		header('location:admin.php');
+		header('location:admin2.php');
 	}else {
-		header('lcoation:admin.php');
+		header('lcoation:admin2.php');
 	}
 }
 
@@ -361,9 +383,9 @@ if(isset($_POST['addadmin'])){
  	$queryupdate = mysqli_query($conn, "update login set username='$usernamebaru', password='$passwordbaru' where iduser='$idnya'");
 
  	if($queryupdate){
- 		header('location:admin.php');
+ 		header('location:admin2.php');
  	} else {
- 		header('lcoation:admin.php');
+ 		header('lcoation:admin2.php');
  	}
  }
 
@@ -373,37 +395,49 @@ if(isset($_POST['addadmin'])){
 
  	$querydelete = mysqli_query($conn, "delete from login where iduser = '$id'");
  	if($querydelete){
- 		header('location:admin.php');
+ 		header('location:admin2.php');
  	} else {
- 		header('location:admin.php');
+ 		header('location:admin2.php');
  	}
 
  }
 
-//edit data admin
- if(isset($_POST['updateadmin'])){
- 	$usernamebaru = $_POST['usernameadmin'];
- 	$passwordbaru = $_POST['passwordbaru'];
- 	$idnya = $_POST['id'];
+//kategori tambah
+if(isset($_POST['addnewkategori'])){
+	$namabarang = $_POST['namabarang'];
+	
+	$queryinsert = mysqli_query($conn, "insert into kategori (kategori) values ('$namabarang')");
 
- 	$queryupdate = mysqli_query($conn, "update login set username='$usernamebaru', password='$passwordbaru' where iduser='$idnya'");
+	if($queryinsert){
+		header('location:kategori.php');
+	}else {
+		header('lcoation:kategori.php');
+	}
+}
+
+//edit data kategori
+ if(isset($_POST['updatekategori'])){
+ 	$namabarang = $_POST['namabarang'];
+ 	$idnya = $_POST['idb'];
+
+ 	$queryupdate = mysqli_query($conn, "update kategori set kategori='$namabarang' where idkategori='$idnya'");
 
  	if($queryupdate){
- 		header('location:admin.php');
+ 		header('location:kategori.php');
  	} else {
- 		header('lcoation:admin.php');
+ 		header('lcoation:kategori.php');
  	}
  }
 
- //hapus admin
- if(isset($_POST['hapusadmin'])){
- 	$id = $_POST['id'];
+ //hapus kategori
+ if(isset($_POST['hapuskategori'])){
+ 	$id = $_POST['idb'];
 
- 	$querydelete = mysqli_query($conn, "delete from login where iduser = '$id'");
+ 	$querydelete = mysqli_query($conn, "delete from kategori where idkategori = '$id'");
  	if($querydelete){
- 		header('location:admin.php');
+ 		header('location:kategori.php');
  	} else {
- 		header('location:admin.php');
+ 		header('lcoation:kategori.php');
  	}
 
  }

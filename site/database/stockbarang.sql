@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 11, 2021 at 05:35 PM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.5
+-- Generation Time: Jun 10, 2021 at 04:10 PM
+-- Server version: 10.4.17-MariaDB
+-- PHP Version: 8.0.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -57,17 +57,6 @@ CREATE TABLE `keluar` (
   `qty` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `keluar`
---
-
-INSERT INTO `keluar` (`idkeluar`, `idbarang`, `tanggal`, `penerima`, `qty`) VALUES
-(18, 60, '2021-06-10 16:27:30', 'Alem', 2),
-(19, 56, '2021-06-11 05:10:51', 'Alem', 1),
-(20, 63, '2021-06-11 05:11:12', 'Alem', 2),
-(21, 65, '2021-05-11 13:29:59', 'Alem', 1),
-(22, 65, '2021-06-11 13:30:17', 'nizam', 1);
-
 -- --------------------------------------------------------
 
 --
@@ -106,17 +95,6 @@ CREATE TABLE `masuk` (
   `qty` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `masuk`
---
-
-INSERT INTO `masuk` (`idmasuk`, `idbarang`, `idsup`, `tanggal`, `keterangan`, `qty`) VALUES
-(77, 58, 10, '2021-06-10 16:02:10', '', 2),
-(81, 60, 10, '2021-06-10 16:28:17', '', 1),
-(82, 63, 10, '2021-06-11 05:10:47', '', 2),
-(84, 65, 10, '2021-05-11 13:30:25', '', 5),
-(86, 65, 11, '2021-06-11 13:38:08', '', 5);
-
 -- --------------------------------------------------------
 
 --
@@ -138,9 +116,8 @@ CREATE TABLE `stock` (
 --
 
 INSERT INTO `stock` (`idbarang`, `idkategori`, `namabarang`, `deskripsi`, `stock`, `image`, `status`) VALUES
-(64, 4, 'Kursi gaming 6', '<br />\r\n<b>Notice</b>:  U', 2, 'c9c0f43c253b85ba1f5361e4db4b701b.jpg', 'approve'),
-(65, 3, 'NVIDIA MSI GTX 1660 Duper', '<br />\r\n<b>Notice</b>:  U', 10, '0e525a8fe22711a62f5693d6d63c8fb6.jpg', 'approve'),
-(69, 6, 'Kursi gaming G', '<br />\r\n<b>Notice</b>:  U', 3, '3c9794e3680fe0da270d8ce8aade3c9e.png', 'approve');
+(56, 3, 'Monitor ganteng', '', 1000, '384703e7390a878777eedf4d5507a729.png', 'approve'),
+(57, 3, 'Contoh monitor', '', 150, '8b2362c98eee8331167b8d0e5c77f8bc.png', 'approve');
 
 -- --------------------------------------------------------
 
@@ -152,14 +129,6 @@ CREATE TABLE `supplier` (
   `idsup` int(11) NOT NULL,
   `supplier` varchar(55) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `supplier`
---
-
-INSERT INTO `supplier` (`idsup`, `supplier`) VALUES
-(10, 'Intelligent System'),
-(11, 'NHENTONG');
 
 --
 -- Indexes for dumped tables
@@ -215,31 +184,31 @@ ALTER TABLE `kategori`
 -- AUTO_INCREMENT for table `keluar`
 --
 ALTER TABLE `keluar`
-  MODIFY `idkeluar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `idkeluar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `login`
 --
 ALTER TABLE `login`
-  MODIFY `iduser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `iduser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `masuk`
 --
 ALTER TABLE `masuk`
-  MODIFY `idmasuk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
+  MODIFY `idmasuk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
 
 --
 -- AUTO_INCREMENT for table `stock`
 --
 ALTER TABLE `stock`
-  MODIFY `idbarang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `idbarang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `supplier`
 --
 ALTER TABLE `supplier`
-  MODIFY `idsup` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `idsup` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

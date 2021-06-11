@@ -6,7 +6,6 @@ require 'cek.php';
 $idbarang = $_GET['id']; //get id brg
 //get informasi barang database
 $get = mysqli_query($conn, "select * from stock s, kategori k where idbarang='$idbarang' AND k.idkategori = s.idkategori");
-
 $fetch = mysqli_fetch_assoc($get);
 //set variable
 $namabarang = $fetch['namabarang'];
@@ -20,23 +19,20 @@ $stock = $fetch['stock'];
 //ada
  $img = 'Tidak ada Gambar';
     }else{
- $img ='<img src = "images/'.$gambar.'" class="zoomable">';
- }
 
- //qr
- $urlview = 'http://localhost/inventaris/view.php?id='. $idbarang;
- $qrcode = 'https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl='.$urlview.'&choe=UTF-8';
+ $img = '<img class = card-img-top" src="images/'.$gambar.'" alt="Card image" style="width:100%">';
+ }
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
+<html>
+<head>
+<title>Tampil Barang</title>
+ <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Detail Barang</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
@@ -46,24 +42,17 @@ $stock = $fetch['stock'];
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
 
-        <script
+         <script
         src="https://code.jquery.com/jquery-2.2.4.min.js"
         integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
         crossorigin="anonymous">
         </script>
 
-        <style>
-            .zoomable{
-                width: 200px;
-                height: 200px;
-            }
-            .zoomable:hover{
-                transform:scale(1.3);
-                transition: 0.4s ease;
-            }
-        </style>
-    </head>
-    <body class="sb-nav-fixed">
+  
+</head>
+<body>
+
+  <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-secondary bg-secondary">
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-3 text-white" href="index.php"><h4>Inventaris Barang</h4></a>
@@ -79,7 +68,7 @@ $stock = $fetch['stock'];
                 <nav class="sb-sidenav accordion sb-sidenav bg-light" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
-                            <div class="sb-sidenav-menu-heading"><img style="width: 90%" src="images/sekai.jpg" class="rounded-circle" alt="Cinque Terre"></div>
+                            <div class="sb-sidenav-menu-heading"><img style="width: 90%" src="images/J.png" class="rounded-circle" alt="Cinque Terre"></div>
                             <Center><h5 style="font-family: cursive ">Hai <?php echo $_SESSION['username']; ?></h5></Center>
                             <div class="sb-sidenav-menu-heading"></div>
                             <a class="nav-link" href="index.php">
@@ -102,10 +91,6 @@ $stock = $fetch['stock'];
                                 <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                                 Supplier
                             </a>
-                             <a class="nav-link" href="admin.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-user-friends"></i></div>
-                                Admin
-                            </a>
                             <a class="nav-link" href="logout.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-sign-out-alt"></i></div>
                                 Logout
@@ -115,38 +100,44 @@ $stock = $fetch['stock'];
                     
                 </nav>
             </div>
-            <div id="layoutSidenav_content">
-                <main>
-                    <div class="container-fluid px-4">
 
-                    
-
-                        <center><h1 class="mt-4">Detail Barang</h1></center>
-                      
-                        <div class="card mb-4 mt-4">
-                            <div class="card-header">
-                              <strong> <h2><?=$namabarang;?></strong></h2><br>
-                               <?=$img;?>
-                                
-                                <a href="<?=$urlview;?>">
-                                 <img alt="" src="<?=$qrcode;?>">
-                                
-                              </a>
-                            </div>
-                            <div class="card-body">
-                              
-                              <div class="row">
-                                  <div class="col-md-1"><b><h6>kategori</b></h6></div>
-                                  <div class="col-md-5">: <?=$kategori;?></div>
-                              </div>
-                              <div class="row">
-                                  <div class="col-md-1"><b><h6>Stok</b></h6></div>
-                                  <div class="col-md-5">: <?=$stock;?></div>
-                              </div></br>
-
-                                <h2>Barang Masuk</h2>
-                                <div class= "table-responsive">  
-                                <table id="barangmasuk" class="table table-bordered" cellspacing="0" width="100%">
+	<div class="container">
+  <div class="row">
+    <div class="col"><br><br><br>
+     <div class="container">
+		<p><h3>Detail Barang : </h3></p>
+	<div class="card" style="width:400px">
+	<?=$img;?>
+    <div class="card-body">
+      <table >
+        <tr>
+          <th style="font-size: 120%">Nama Barang</th>
+          <td></td>
+          <td>:</td>
+          <td><?=$namabarang;?></td>
+        </tr>
+        <tr>
+          <th style="font-size: 120%">Kategori</th>
+          <td></td>
+           <td>:</td>
+           <td><?=$kategori;?></td>
+        </tr>
+        <tr>
+          <th style="font-size: 120%">Stok</th>
+          <td></td>
+           <td>:</td>
+           <td><?=$stock;?></td>
+        </tr>
+        <tr></tr>
+      </table>
+    </div>
+  </div>
+</div>
+    </div>
+    <div class="col">
+    	<br><br><br>
+    	<p><h3>Barang Masuk </h3></p>
+    	 <table id="viewmasuk" class="table table-bordered" cellspacing="0" width="100%">
                                     <thead>
                                         <tr>
                                             <th>No</th>
@@ -158,7 +149,7 @@ $stock = $fetch['stock'];
                                     <tbody>
                                 
                                         <?php
-                                        $ambildatamasuk = mysqli_query($conn, "select * from masuk m, supplier u, stock s where u.idsup = m.idsup AND s.idbarang = m.idbarang ");
+                                        $ambildatamasuk = mysqli_query($conn, "select * from masuk m, supplier u where idbarang='$idbarang' AND u.idsup = m.idsup ");
                                         $i = 1;
                                         while($fetch = mysqli_fetch_array($ambildatamasuk)){
                                             $tanggal = $fetch['tanggal'];
@@ -176,14 +167,10 @@ $stock = $fetch['stock'];
                                        <?php
                                    };
                                    ?>
-                                       
                                     </tbody>
-                                </table>
-                            </div><br><br>
-
-                            <h2>Barang Keluar</h2>
-                                <div class= "table-responsive">  
-                                <table id="barangkeluar" class="table table-bordered" cellspacing="0" width="100%">
+                             
+                                <table id="viewkeluar" class="table table-bordered" cellspacing="0" width="100%">
+                                	<h3>Barang Keluar</h3>
                                     <thead>
                                         <tr>
                                             <th>No</th>
@@ -219,63 +206,31 @@ $stock = $fetch['stock'];
                                     </tbody>
                                 </table>
                             </div>
+                                </table>
+   							 </div>
 
-                        </div>
-                    </div>
 
-                </main>
-
-            </div>
-        </div>
-
-        <script src="js/scripts.js"></script>
+   <script src="js/scripts.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
         <script src="assets/demo/chart-area-demo.js"></script>
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
-    </body>
-    
-<!-- The Modal -->
-  <div class="modal fade" id="myModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-      
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">Tambah Barang</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        
-        <!-- Modal body -->
-        <form method="post" enctype="multipart/form-data">
-        <div class="modal-body">
-        <input type="text" name="namabarang" placeholder="Nama Barang" class="form-control" required="">
-        <br>
-        <input type="text" name="deskripsi" placeholder="Deskripsi barang" class="form-control" required="">
-        <br> 
-        <input type="number" name="stock" placeholder="stock" class="form-control" required="">
-        <br> 
-        <input type="file" name="file" class="form-control">
-        <br>
-        
-        <button type="submit" class="btn btn-primary" name="addnewbarang">Submit</button>
-        </div>
-        </form>  
-        
+
         <script type="text/javascript">
             $(document).ready( function () {
-            $('#barangmasuk').DataTable();
+            $('#viewmasuk').DataTable();
         } );
         </script>
+
         <script type="text/javascript">
             $(document).ready( function () {
-            $('#barangkeluar').DataTable();
+            $('#viewkeluar').DataTable();
         } );
         </script>
-        
-        <script>
+
+         <script>
         $(function(){
         setInterval(timestamp, 1000);
         });
@@ -289,8 +244,7 @@ $stock = $fetch['stock'];
         });
         }
         </script>
-        
-      </div>
-    </div>
-  </div>
+
+</body>
+
 </html>

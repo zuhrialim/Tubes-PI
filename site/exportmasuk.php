@@ -26,6 +26,7 @@ require 'cek.php';
                   <input type="date" name="tgl_mulai" class="form-control">
                   <input type="date" name="tgl_selesai" class="form-control ml-2">
                 <button type="submit" name="filter_tgl" class="btn btn-success ml-2">Filter</button>
+                 <a href="keluar.php" class="btn btn-primary ml-2" >Kembali</a>
               </form>  
              </div>
             </div>

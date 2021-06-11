@@ -20,7 +20,7 @@ if (isset($_POST['login'])){
     $_SESSION['role'] = $data['role'];
 
     if ($data['role'] == 'admin') {
-        return header("location:admin.php");
+        return header("location:admin2.php");
     } else {
         return header('location:index.php');
     }
