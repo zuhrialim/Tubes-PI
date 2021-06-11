@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 07, 2021 at 08:45 AM
+-- Generation Time: Jun 11, 2021 at 05:35 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.5
 
@@ -57,6 +57,17 @@ CREATE TABLE `keluar` (
   `qty` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `keluar`
+--
+
+INSERT INTO `keluar` (`idkeluar`, `idbarang`, `tanggal`, `penerima`, `qty`) VALUES
+(18, 60, '2021-06-10 16:27:30', 'Alem', 2),
+(19, 56, '2021-06-11 05:10:51', 'Alem', 1),
+(20, 63, '2021-06-11 05:11:12', 'Alem', 2),
+(21, 65, '2021-05-11 13:29:59', 'Alem', 1),
+(22, 65, '2021-06-11 13:30:17', 'nizam', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -66,17 +77,19 @@ CREATE TABLE `keluar` (
 CREATE TABLE `login` (
   `iduser` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL
+  `password` varchar(50) NOT NULL,
+  `role` enum('admin','staff') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `login`
 --
 
-INSERT INTO `login` (`iduser`, `username`, `password`) VALUES
-(1, 'jepara', 'jepara'),
-(3, 'Minami', '123'),
-(5, 'Anthiese', '123');
+INSERT INTO `login` (`iduser`, `username`, `password`, `role`) VALUES
+(1, 'jepara', 'jepara', 'admin'),
+(3, 'Minami', '123', 'staff'),
+(5, 'Anthiese', '123', 'staff'),
+(6, 'staff', 'staff', 'staff');
 
 -- --------------------------------------------------------
 
@@ -93,6 +106,17 @@ CREATE TABLE `masuk` (
   `qty` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `masuk`
+--
+
+INSERT INTO `masuk` (`idmasuk`, `idbarang`, `idsup`, `tanggal`, `keterangan`, `qty`) VALUES
+(77, 58, 10, '2021-06-10 16:02:10', '', 2),
+(81, 60, 10, '2021-06-10 16:28:17', '', 1),
+(82, 63, 10, '2021-06-11 05:10:47', '', 2),
+(84, 65, 10, '2021-05-11 13:30:25', '', 5),
+(86, 65, 11, '2021-06-11 13:38:08', '', 5);
+
 -- --------------------------------------------------------
 
 --
@@ -105,8 +129,18 @@ CREATE TABLE `stock` (
   `namabarang` varchar(25) NOT NULL,
   `deskripsi` varchar(25) NOT NULL,
   `stock` int(11) NOT NULL,
-  `image` varchar(99) DEFAULT NULL
+  `image` varchar(99) DEFAULT NULL,
+  `status` enum('pending','approve') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `stock`
+--
+
+INSERT INTO `stock` (`idbarang`, `idkategori`, `namabarang`, `deskripsi`, `stock`, `image`, `status`) VALUES
+(64, 4, 'Kursi gaming 6', '<br />\r\n<b>Notice</b>:  U', 2, 'c9c0f43c253b85ba1f5361e4db4b701b.jpg', 'approve'),
+(65, 3, 'NVIDIA MSI GTX 1660 Duper', '<br />\r\n<b>Notice</b>:  U', 10, '0e525a8fe22711a62f5693d6d63c8fb6.jpg', 'approve'),
+(69, 6, 'Kursi gaming G', '<br />\r\n<b>Notice</b>:  U', 3, '3c9794e3680fe0da270d8ce8aade3c9e.png', 'approve');
 
 -- --------------------------------------------------------
 
@@ -118,6 +152,14 @@ CREATE TABLE `supplier` (
   `idsup` int(11) NOT NULL,
   `supplier` varchar(55) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `supplier`
+--
+
+INSERT INTO `supplier` (`idsup`, `supplier`) VALUES
+(10, 'Intelligent System'),
+(11, 'NHENTONG');
 
 --
 -- Indexes for dumped tables
@@ -173,31 +215,31 @@ ALTER TABLE `kategori`
 -- AUTO_INCREMENT for table `keluar`
 --
 ALTER TABLE `keluar`
-  MODIFY `idkeluar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `idkeluar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `login`
 --
 ALTER TABLE `login`
-  MODIFY `iduser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `iduser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `masuk`
 --
 ALTER TABLE `masuk`
-  MODIFY `idmasuk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+  MODIFY `idmasuk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 
 --
 -- AUTO_INCREMENT for table `stock`
 --
 ALTER TABLE `stock`
-  MODIFY `idbarang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `idbarang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT for table `supplier`
 --
 ALTER TABLE `supplier`
-  MODIFY `idsup` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `idsup` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

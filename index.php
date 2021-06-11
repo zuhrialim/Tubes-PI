@@ -95,31 +95,49 @@ require 'cek.php';
             </div>
             <div id="layoutSidenav_content">
                 <main>
-                    <div class="container-fluid px-4">
+                    <div class="container-fluid px-4 position-relative">
+                        <!-- ALERT -->
+                        <?php if(isset($_SESSION['failed'])): ?>
+                        <div
+                            class="alert alert-danger alert-dismissible fade show position-absolute" role="alert"
+                            style="top: -3.25rem; width: 90%"
+                        >
+                            Barang gagal diterima
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                         <?php
-                        $ambildatastock = mysqli_query($conn, "select * from stock where stock < 1");
-                        while($fetch = mysqli_fetch_array($ambildatastock)){
-                            $barang = $fetch['namabarang'];
-                    ?>
+                            unset($_SESSION['failed']);
+                            endif;
+                        ?>
+                        
+                        <?php
+                            $ambildatastock = mysqli_query($conn, "select * from stock where stock < 1");
+                            while($fetch = mysqli_fetch_array($ambildatastock)){
+                                $barang = $fetch['namabarang'];
+                        ?>
 
-                    <div class="alert alert-danger alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                <strong> Stok barang <?=$barang;?> kosong!!</strong>
-                    </div>
+                        <div class="alert alert-danger alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong> Stok barang <?=$barang;?> kosong!!</strong>
+                        </div>
 
-              <?php
-                }
-              ?>
+                        <?php
+                            }
+                        ?>
 
                         <h1 class="mt-4">Daftar Barang</h1>
                       
                         <div class="card mb-4">
+                            <?php if($_SESSION['role'] == 'staff'): ?>
                             <div class="card-header">
                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
                                     Tambah Barang
                                 </button>
                                 <a href="export.php" class="btn btn-success float-right">Export Barang</a>
                             </div>
+                            <?php endif; ?>
                           
                             <div class="card-body">
                                 <div class= "table-responsive">  
@@ -139,8 +157,18 @@ require 'cek.php';
                                     <tbody>
 
                                         <?php
-                                        $ambilsemuadatastock = mysqli_query($conn, "select * from stock s, kategori k where k.idkategori = s.idkategori ");
-                                         $i = 1;
+
+                                        if ($_SESSION['role'] == 'admin'):
+                                            $ambilsemuadatastock = mysqli_query($conn, 
+                                                "select * from stock s, kategori k where k.idkategori = s.idkategori AND s.status = 'pending'"
+                                            );
+                                        else:
+                                            $ambilsemuadatastock = mysqli_query($conn, 
+                                                "select * from stock s, kategori k where k.idkategori = s.idkategori AND s.status = 'approve'"
+                                            );
+                                        endif;
+
+                                        $i = 1;
                                         while($data = mysqli_fetch_array($ambilsemuadatastock)){
                                             $idb = $data['idbarang'];
                                             $idk = $data['idkategori'];
@@ -168,14 +196,25 @@ require 'cek.php';
                                             <td><?=$img;?></td>
                                             <td> <a href="<?=$urlview.$idb;?>">
                                             <img alt="" src="<?=$qrcode;?>"></td>
-                                            <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit<?=$idb;?>">
-                                                <i class="fas fa-edit"></i></button>
+                                            <td>
+                                                <?php if($_SESSION['role'] == 'staff'): ?>
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit<?=$idb;?>">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
                                                 <input type="hidden" name="idbarangygmaudihapus" value="<?=$idb;?>">
                                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete<?=$idb;?>">
-                                                 <i class="fas fa-trash-alt"></i></button>
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
                                                 <a href="detail.php?id=<?=$idb;?>" class="btn btn-success"><i class="fas fa-info-circle"></i></a>
-                                                 
-                                         </td>
+                                                <?php else: ?>
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#accept<?=$idb;?>">
+                                                    Terima
+                                                </button>
+                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#reject<?=$idb;?>">
+                                                    Tolak
+                                                </button>
+                                                <?php endif; ?>
+                                            </td>
 
                                        </tr>
 
@@ -248,6 +287,58 @@ require 'cek.php';
                                         </div>
                                       </div>
 
+                                       <!-- Reject  -->
+                                      <div class="modal fade" id="reject<?=$idb;?>">
+                                        <div class="modal-dialog">
+                                          <div class="modal-content">
+                                          
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                              <h4 class="modal-title">Tolak Barang</h4>
+                                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+                                            
+                                            <!-- Modal body -->
+                                            <form method="post">
+                                            <div class="modal-body">
+                                            Apakah yakin ingin menolak barang <?=$namabarang;?>?
+                                            <input type="hidden" name="idb" value="<?=$idb;?>">
+                                            <br>
+                                            <br>
+                                            <button type="submit" class="btn btn-danger" name="hapusbarang">Tolak</button>
+                                            </div>
+                                            </form>  
+                                            
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                       <!-- Terima  -->
+                                      <div class="modal fade" id="accept<?=$idb;?>">
+                                        <div class="modal-dialog">
+                                          <div class="modal-content">
+                                          
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                              <h4 class="modal-title">Terima Barang</h4>
+                                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+                                            
+                                            <!-- Modal body -->
+                                            <form method="post">
+                                            <div class="modal-body">
+                                            Apakah yakin ingin menerima barang <?=$namabarang;?>?
+                                            <input type="hidden" name="idb" value="<?=$idb;?>">
+                                            <br>
+                                            <br>
+                                            <button type="submit" class="btn btn-primary" name="terimabarang">Terima</button>
+                                            </div>
+                                            </form>  
+                                            
+                                          </div>
+                                        </div>
+                                      </div>
+
                                        <?php
                                    };
                                    ?>
@@ -284,34 +375,34 @@ require 'cek.php';
         
         <!-- Modal body -->
         <form method="post" enctype="multipart/form-data">
-        <div class="modal-body">
-        <input type="text" name="namabarang" placeholder="Nama Barang" class="form-control" required="">
-        <br>
-         <select name="kategorinya" class="form-control">
-            <?php
-                $ambilsemuadatanya = mysqli_query($conn, "select * from kategori");
-                while($fetcharray = mysqli_fetch_array($ambilsemuadatanya)){
-                    $namabarangnya = $fetcharray['kategori'];
-                    $idbarangnya = $fetcharray['idkategori'];
-                ?>
+            <div class="modal-body">
+                <input type="text" name="namabarang" placeholder="Nama Barang" class="form-control" required="">
+                <br>
+                <select name="kategorinya" class="form-control">
+                    <?php
+                        $ambilsemuadatanya = mysqli_query($conn, "select * from kategori");
+                        while($fetcharray = mysqli_fetch_array($ambilsemuadatanya)){
+                            $namabarangnya = $fetcharray['kategori'];
+                            $idbarangnya = $fetcharray['idkategori'];
+                        ?>
+                        
+                        <option value="<?=$idbarangnya;?>"><?=$namabarangnya;?></option>
+
+                        <?php
+                    }
+                    ?>
+                </select>
+
+                <br> 
+                <input type="number" name="stock" placeholder="stock" class="form-control" required="">
+                <br> 
+                <input type="file" name="file" class="form-control">
+                <br>
+                <input type="hidden" name="deskripsi" placeholder="Deskripsi barang" class="form-control" required="">
+                <br> 
                 
-                <option value="<?=$idbarangnya;?>"><?=$namabarangnya;?></option>
-
-                <?php
-            }
-            ?>
-        </select>
-
-        <br> 
-        <input type="number" name="stock" placeholder="stock" class="form-control" required="">
-        <br> 
-        <input type="file" name="file" class="form-control">
-        <br>
-        <input type="hidden" name="deskripsi" placeholder="Deskripsi barang" class="form-control" required="">
-        <br> 
-        
-        <button type="submit" class="btn btn-primary" name="addnewbarang">Tambah</button>
-        </div>
+                <button type="submit" class="btn btn-primary" name="addnewbarang">Tambah</button>
+            </div>
         </form>  
         
        

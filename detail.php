@@ -24,7 +24,7 @@ $stock = $fetch['stock'];
  }
 
  //qr
- $urlview = 'http://localhost/stockbarang/view.php?id='. $idbarang;
+ $urlview = 'http://localhost/inventaris/view.php?id='. $idbarang;
  $qrcode = 'https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl='.$urlview.'&choe=UTF-8';
 ?>
 

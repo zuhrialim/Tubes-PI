@@ -2,6 +2,10 @@
 require 'function.php';
 require 'cek.php';
 
+if ($_SESSION['role'] != 'admin') {
+    return header('location:index.php');
+}
+
 //qr
  $urlview = 'http://localhost/stockbarang/view.php?id='.$idbarang;
  $qrcode = 'https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl='.$urlview.'&choe=UTF-8';

@@ -14,12 +14,19 @@ if (isset($_POST['login'])){
     $data = mysqli_fetch_assoc($cekdatabase);
     $_SESSION['log'] = 'True';
     $_SESSION['username'] = $username;
-    $_SESSION['nama'] = $data['nama'];
+    // $_SESSION['nama'] = $data['nama'];
     $_SESSION['status'] = "sudah_login";
-    $_SESSION['id_login'] = $data['id'];
-    header('location:index.php');
+    // $_SESSION['id_login'] = $data['id'];
+    $_SESSION['role'] = $data['role'];
+
+    if ($data['role'] == 'admin') {
+        return header("location:admin.php");
+    } else {
+        return header('location:index.php');
+    }
+
   } else {
-   header("location:login.php?pesan=Username/Password Salah.");
+   return header("location:login.php?pesan=Username/Password Salah.");
   }
 };
 
