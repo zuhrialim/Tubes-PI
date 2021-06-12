@@ -48,7 +48,7 @@ if ($_SESSION['role'] != 'admin') {
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-secondary bg-secondary">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3 text-white" href="index.php"><h4>Inventaris Barang</h4></a>
+            <a class="navbar-brand ps-3 text-white" href="indexpending.php"><h4>Inventaris Barang</h4></a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars text-white"></i></button>
             <ul class="navbar-nav ml-auto">

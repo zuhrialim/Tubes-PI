@@ -79,7 +79,7 @@ $stock = $fetch['stock'];
                 <nav class="sb-sidenav accordion sb-sidenav bg-light" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
-                            <div class="sb-sidenav-menu-heading"><img style="width: 90%" src="images/sekai.jpg" class="rounded-circle" alt="Cinque Terre"></div>
+                            <div class="sb-sidenav-menu-heading"><img style="width: 90%" src="images/J.png" class="rounded-circle" alt="Cinque Terre"></div>
                             <Center><h5 style="font-family: cursive ">Hai <?php echo $_SESSION['username']; ?></h5></Center>
                             <div class="sb-sidenav-menu-heading"></div>
                             <a class="nav-link" href="index.php">
