@@ -2,7 +2,7 @@
  session_start();
 
 //Membuat koneksi ke database
-$conn = mysqli_connect("localhost","root","","stockbarang");
+$conn = mysqli_connect("172.24.224.1","root","12345","stockbarang");
 
 //menambah barang baru
 if(isset($_POST['addnewbarang'])){
@@ -378,14 +378,15 @@ if(isset($_POST['addadmin'])){
  if(isset($_POST['updateadmin'])){
  	$usernamebaru = $_POST['usernameadmin'];
  	$passwordbaru = $_POST['passwordbaru'];
+	$role = $_POST['role'];
  	$idnya = $_POST['id'];
 
- 	$queryupdate = mysqli_query($conn, "update login set username='$usernamebaru', password='$passwordbaru' where iduser='$idnya'");
+ 	$queryupdate = mysqli_query($conn, "update login set username='$usernamebaru', password='$passwordbaru', role = '$role' where iduser='$idnya'");
 
  	if($queryupdate){
  		header('location:admin2.php');
  	} else {
- 		header('lcoation:admin2.php');
+ 		header('location:admin2.php');
  	}
  }
 
